@@ -898,6 +898,8 @@ def parseArgs(args):
                       help='Total time of simulation. (Default = 20)')
     parser.add_option('', '--num-cells', type='int',default=100,
                       help='Number of cells sample. (Default = 100)')
+    parser.add_option('', '--steps-per-time-unit', type='int',default=100,
+                      help='Number of steps per time unit in ODE discretization. (Default = 100)')
     parser.add_option('', '--sample-cells', action='store_true',default=False,
                       help="Sample a single cell from each trajectory?\n"
                       "By default will store full trajectory of each simulation (Default = False)")    
@@ -952,6 +954,7 @@ def main(args):
         print("Please specify path to Boolean model")
         sys.exit()
 
+    stepsPerTimeUnit = opts.steps_per_time_unit
     tmax = opts.max_time
     numCells = opts.num_cells
     identicalPars = opts.identical_pars
@@ -1011,7 +1014,7 @@ def main(args):
         
     ## Hardcoded  ODE simulation time steps
     ## This can be reduced
-    timesteps = 100
+    timesteps = stepsPerTimeUnit
     tspan = np.linspace(0,tmax,tmax*timesteps)
     
     DF, withoutRules = readBooleanRules(path, parameterInputsPath,
